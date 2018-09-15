@@ -1,0 +1,73 @@
+<!--
+sjr_def_input(sjr_type)
+sjr_if_match_state(state,state_not)
+-->
+
+[sjr_def_input sjr_type="person-name" maxlength="20" id=""]
+[sjr_if_match_state state="input"]
+<input id="{id}" type="text" name="{name}" maxlength="{maxlength}" {required} value="{value}" />
+[/sjr_if_match_state]
+[sjr_if_match_state state="confirm"]
+<span id="{id}">{value}</span>
+[/sjr_if_match_state]
+[/sjr_def_input]
+
+[sjr_def_input sjr_type="person-name_kana" maxlength="20" id=""]
+[sjr_if_match_state state="input"]
+<input type="text" name="{name}" maxlength="{maxlength}" {required} />
+[/sjr_if_match_state]
+[sjr_if_match_state state="confirm"]
+<span id="{id}">{value}</span>
+[/sjr_if_match_state]
+[/sjr_def_input]
+
+[sjr_def_input sjr_type="email" id=""]
+[sjr_if_match_state state="input"]
+<input type="email" name="{name}" {required} />
+[/sjr_if_match_state]
+[sjr_if_match_state state="confirm"]
+<span id="{id}">{value}</span>
+[/sjr_if_match_state]
+[/sjr_def_input]
+
+[sjr_def_input sjr_type="tel" prefix="" id=""]
+[sjr_if_match_state state="input"]
+<input type="text" id="{prefix}_tel_0" name="{prefix}_tel_0" maxlength="5" {required} />
+<span id="{prefix}_tel_separator_0"></span>
+<input type="text" id="{prefix}_tel_1" name="{prefix}_tel_1" maxlength="5" {required} />
+<span id="{prefix}_tel_separator_1"></span>
+<input type="text" id="{prefix}_tel_2" name="{prefix}_tel_2" maxlength="5" {required} />
+<input type="text" id="{name}" name="{name}" {required} />
+<script type="javascript">
+
+</script>
+[/sjr_if_match_state]
+
+[sjr_if_match_state state="confirm"]
+<span id="{id}">{value}</span>
+[/sjr_if_match_state]
+[/sjr_def_input]
+
+
+[sjr_def_input sjr_type="text" id="" required="" maxlength="10000"]
+[sjr_if_match_state state="input"]
+<input type="text" id="{id}" {required} maxlength="{maxlength}" />]
+[/sjr_if_match_state]
+[sjr_if_match_state state="confirm"]
+<span id="{id}">{value}</span>
+[/sjr_if_match_state]
+[/sjr_def_input]
+
+[sjr_def_input sjr_type="textarea" id="" required="" maxlength="10000" placeholder=""]
+[sjr_if_match_state state="input"]
+<textarea id="{id}" {required} maxlength="{maxlength}" placeholder="{placeholder}">
+</textarea>
+[/sjr_if_match_state]
+[sjr_if_match_state state="confirm"]
+<div id="{id}">
+  <pre>
+{value}
+  </pre>
+</div>
+[/sjr_if_match_state]
+[/sjr_def_input]

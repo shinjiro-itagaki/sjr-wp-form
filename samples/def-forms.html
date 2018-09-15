@@ -1,0 +1,39 @@
+<!--
+sjr_page_component(name)
+sjr_input(sjr_type)
+sjr_def_form(name)
+sjr_page(name,position)
+sjr_replace_name(from,to)
+sjr_include_component(name)
+-->
+
+[sjr_require name="sjr_def_inputs"]
+
+[sjr_page_component name="internship-common-person" prefix="" suffix="__c" required="required"]
+[sjr_input sjr_type="person-name"      name="first_name{suffix}"       requierd="required"]
+[sjr_input sjr_type="person-name_kana" name="first_name_kana{suffix}"  required="required"]
+[sjr_input sjr_type="person-name"      name="last_name{suffix}"        required="required"]
+[sjr_input sjr_type="person-name_kana" name="last_name_kana{suffix}"   required="required"]
+[sjr_input sjr_type="email"            name="email{suffix}"            required="required"]
+[sjr_input sjr_tyep="tel"              name="tel{suffix}"              required="required"]
+[/sjr_page_component]
+
+[sjr_page_component name="internship-common-es" prefix="es_qa_" suffix="__c"]
+[sjr_input sjr_type="text"      name="{prefix}1{suffix}" required="required"]
+[sjr_input sjr_type="textarea"  name="{prefix}2{suffix}" required="required"]
+[sjr_input sjr_type="text"      name="{prefix}3{suffix}" required="required"]
+[sjr_input sjr_type="text"      name="{prefix}4{suffix}" required="required"]
+[sjr_input sjr_type="textarea"  name="{prefix}5{suffix}" required="required"]
+[/sjr_page_component]
+
+[sjr_def_form name="internship-2018-autumn"]
+[sjr_page name="register" position="1"]
+[sjr_include_component name="internship-common-person" suffix="__c"]
+[sjr_replace_name from="email__c" to="Mail__c"]
+[/sjr_include_component]
+[/sjr_page]
+
+[sjr_page name="register-es" position="2"]
+[sjr_include_component name="internship-common-es"]
+[/sjr_page]
+[/sjr_def_form]

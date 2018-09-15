@@ -1,0 +1,27 @@
+<!--
+sjr_require(name)
+sjr_def_form_display(name)
+sjr_show_form(name)
+
+sjr_show_form_display(name)
+-->
+
+
+[sjr_require name="form_defs"]
+
+<!-- 「インターンシップ 2018 秋」の全ページ -->
+[sjr_def_form_display name="internship-2018-autumn_all_pages"]
+[sjr_show_form name="internship-2018-autumn"]
+[/sjr_def_form_display]
+
+
+
+
+<!-- 「インターンシップ 2018 秋」のユーザー登録部分とESを分けたもの -->
+[sjr_def_form_display name="internship-2018-autumn_register"]
+[sjr_show_form name="internship-2018-autumn" page="register"]
+[/sjr_def_form_display]
+
+[sjr_def_form_display name="internship-2018-autumn_register-es"]
+[sjr_show_form name="internship-2018-autumn" page="register-es"]
+[/sjr_def_form_display]
