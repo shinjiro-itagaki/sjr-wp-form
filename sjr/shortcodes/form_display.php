@@ -31,7 +31,8 @@ function func_sjr_show_form_display(array $default_attrs, string $footer)
         
         return "
 <form method=\"post\" action=\"$action_url\">
-${content}
+$content
+$footer
 </form>
 ";
     }else{
