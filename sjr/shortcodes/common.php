@@ -49,7 +49,7 @@ function sjr_do_shortcode(string $content, array $attrs=[], array $defaults=[]):
         }
         // return "<div>" . print_r($new_attrs, true) . "</div>" . do_shortcode($content);
         sjr_set_parent_attrs($new_attrs);
-        return do_shortcode($content);
+        return sjr\do_shortcode_impl($content);
     });    
 }
 

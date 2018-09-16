@@ -43,3 +43,7 @@ function register_plugin_install_hooks(){
     }
 }
 
+function register_requested_hook(string $func_name){
+    add_filter('parse_request', $func_name);
+}
+
