@@ -15,16 +15,14 @@ function func_sjr_replace_name($attrs)
 }
 add_shortcode('sjr_replace_name', 'func_sjr_replace_name');
 
-function sjr_name_replace_on(){
+function sjr_name_replace($func){
     global $name_replace_list;
     global $replace_name_on;
     $replace_name_on = true;
     $name_replace_list = [];
-}
-
-function sjr_name_replace_off(){
-    global $replace_name_on;
+    $rtn = $func();
     $replace_name_on = false;
+    return $rtn;
 }
 
 function get_input_def(string $sjr_type)
@@ -63,7 +61,7 @@ function func_sjr_def_input(array $attrs, string $content)
 {
     global $sjr_def_inputs;
     $sjr_type = sjr_get($attrs,SJR_TYPE);
-    $sjr_def_inputs[$sjr_type] = sjr_mk_def_input($content, $atttrs);
+    $sjr_def_inputs[$sjr_type] = sjr_mk_def_input($content, $attrs);
     return "";
 }
 
@@ -89,7 +87,10 @@ function func_sjr_input(array $attrs){
     }
     
     $sjr_type = sjr_get($attrs,SJR_TYPE);
-    $def = get_input_def($sjr_type);
+    $def = null;
+    if($sjr_type){
+        $def = get_input_def($sjr_type);
+    }
     if($def){
         $default_attrs = $def[SJR_ATTRS];
         $content = $def[SJR_CONTENT];

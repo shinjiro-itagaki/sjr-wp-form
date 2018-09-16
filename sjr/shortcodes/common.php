@@ -3,6 +3,24 @@ define("SJR_TYPE","sjr_type");
 define("SJR_ATTRS","attr");
 define("SJR_CONTENT","content");
 
+$sjr_show = false;
+
+function sjr_is_on_show()
+{
+    global $sjr_show;
+    return $sjr_show;
+}
+
+function sjr_on_show($func)
+{
+    global $sjr_show;
+    $swp = $sjr_show;
+    $sjr_show = true;
+    $rtn = $func();
+    $sjr_show = $swp;
+    return $rtn;
+}
+
 function sjr_get(array $attrs, string $name)
 {
     return ((isset($attrs[$name])) ? $attrs[$name] : null );
@@ -18,8 +36,6 @@ function sjr_mk_if_match_state(string $content, array $attrs)
 {
     return sjr_mk_common($content, $attrs);
 }
-
-
 
 /*
  [some_shortcode]
@@ -65,7 +81,11 @@ function func_sjr_require(array $attrs)
             sjr_do_shortcode($content);
             $post_id = $post->ID;
             $post_type = $post->post_type;
+        }else{
+            $content = "page of '$slug' is not found.";
         }
+    }else{
+        $content = "value of 'slug' is not found.";
     }
     
     if($debug){
