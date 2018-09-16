@@ -53,6 +53,19 @@ function sjr_do_shortcode(string $content, array $attrs=[], array $defaults=[]):
     });    
 }
 
+function slug_to_page($slug){
+    return get_page_by_path( $slug,  OBJECT, ['post','page'] );
+}
+
+function slug_to_path($slug){
+    $page = slug_to_page($slug);
+    if($page){
+        return get_permalink( $page->ID );
+    }else{
+        return null;
+    }
+}
+
 // [sjr_require name="sjr_def_inputs" debug=""]
 function func_sjr_require(array $attrs)
 {
@@ -64,7 +77,7 @@ function func_sjr_require(array $attrs)
     if($slug){
         # post : 投稿ページ
         # page : 固定ページ
-        $post = get_page_by_path( $slug,  OBJECT, ['post','page'] );
+        $post = slug_to_page($slug);
         if($post){
             $content = $post->post_content;
             sjr_do_shortcode($content);
