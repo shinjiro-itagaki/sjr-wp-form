@@ -4,45 +4,6 @@ define("SJR_FORM_PAGES","form_pages");
 
 require_once( dirname( __FILE__ ) . "/common.php" );
 
-$sjr_def_forms=[];
-$sjr_pages = [];
-$sjr_page_name = null;
-
-function sjr_set_form(string $name, array $page)
-{
-    global $sjr_def_forms;
-    $sjr_def_forms[$name]=$page;
-}
-
-function sjr_read_pages($before, $after)
-{
-    global $sjr_pages;
-    $sjr_pages = [];
-    $before();
-    $after($sjr_pages);
-}
-
-function sjr_on_show_page($page_name, $func)
-{
-    global $sjr_page_name;
-    $swp = $sjr_page_name;
-    $sjr_page_name = $page_name;
-    $rtn = $func();
-    $sjr_page_name = $swp;
-    return $rtn;
-}
-
-function sjr_get_form($name){
-    global $sjr_def_forms;
-    return  sjr_get($sjr_def_forms, $name);
-}
-
-function sjr_push_page(array $page)
-{
-    global $sjr_pages;
-    array_push($sjr_pages, $page);
-}
-
 function sjr_mk_def_form(string $content, array $attrs, array $pages)
 {
     $rtn = sjr_mk_common($content, $attrs);
@@ -58,10 +19,6 @@ function sjr_mk_page(string $content, array $attrs)
 // @params name
 function func_sjr_def_form($attrs, $content)
 {
-    // global $sjr_pages;
-    // $name = sjr_get($attrs,'name');
-    // $sjr_pages = [];
-
     sjr_read_pages(function() use ($content) {
         sjr_do_shortcode($content);
     },function($sjr_pages) use ($content, $attrs) {
@@ -69,9 +26,6 @@ function func_sjr_def_form($attrs, $content)
         sjr_set_form($name, sjr_mk_def_form( $content, $attrs, $sjr_pages));
     });
     
-    // sjr_do_shortcode($content);
-    // set_form($name, sjr_mk_def_form( $content, $attrs, $sjr_pages));
-    // $sjr_pages = [];
     return "";
 }
 add_shortcode('sjr_def_form', 'func_sjr_def_form');

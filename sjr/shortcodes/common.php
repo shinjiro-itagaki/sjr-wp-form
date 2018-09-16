@@ -1,44 +1,10 @@
 <?php
+
+require_once( dirname( __FILE__ ) . "/global.php" );
+
 define("SJR_TYPE","sjr_type");
 define("SJR_ATTRS","attr");
 define("SJR_CONTENT","content");
-
-$sjr_show = false;
-
-$parent_attrs = [];
-
-function sjr_on_attrs(array $current_attrs, $func)
-{
-    global $parent_attrs;
-    $swap = [] + $parent_attrs;
-    $new_attrs = $current_attrs + $parent_attrs;
-    // $parent_attrs = $new_attrs;
-    $rtn = $func($new_attrs);
-    $parent_attrs = $swap;
-    return $rtn;
-}
-
-function sjr_set_parent_attrs(array $attrs)
-{
-    global $parent_attrs;
-    $parent_attrs = $attrs;
-}
-
-function sjr_is_on_show()
-{
-    global $sjr_show;
-    return $sjr_show;
-}
-
-function sjr_on_show($func)
-{
-    global $sjr_show;
-    $swp = $sjr_show;
-    $sjr_show = true;
-    $rtn = $func();
-    $sjr_show = $swp;
-    return $rtn;
-}
 
 function sjr_get(array $attrs, string $name)
 {
