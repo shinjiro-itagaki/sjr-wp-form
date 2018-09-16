@@ -19,6 +19,12 @@ function sjr_set_parent_attrs(array $attrs)
     $parent_attrs = $attrs;
 }
 
+function sjr_get_parent_attrs()
+{
+    global $parent_attrs;
+    return $parent_attrs;
+}
+
 function sjr_is_on_show()
 {
     global $sjr_show;
@@ -83,4 +89,25 @@ function sjr_set_form_display(array $form_display, $name)
 function sjr_get_form_display($name){
     global $sjr_def_form_displays;
     return sjr_get($sjr_def_form_displays, $name);
+}
+
+$current_state = "input";
+
+function sjr_on_state($state,$func){
+    global $current_state;
+    $old = $current_state;
+    $current_state = $state;
+    $rtn = $func();
+    $current_state = $old;
+    return $rtn;
+}
+
+function sjr_get_state(){
+    global $current_state;
+    return $current_state;
+}
+
+function sjr_set_state($state){
+    global $current_state;
+    $current_state = $state;
 }
