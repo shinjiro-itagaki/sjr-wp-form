@@ -14,9 +14,6 @@ sjr_show_form_display(name)
 [sjr_show_form name="internship-2018-autumn"]
 [/sjr_def_form_display]
 
-
-
-
 <!-- 「インターンシップ 2018 秋」のユーザー登録部分とESを分けたもの -->
 [sjr_def_form_display name="internship-2018-autumn_register"]
 [sjr_show_form name="internship-2018-autumn" page="register"]
@@ -25,3 +22,43 @@ sjr_show_form_display(name)
 [sjr_def_form_display name="internship-2018-autumn_register-es"]
 [sjr_show_form name="internship-2018-autumn" page="register-es"]
 [/sjr_def_form_display]
+
+[email state="complete" reply_to="" return_path="" from="" sender="" subject=""]
+ありがとうございました。
+以下のとおり、応募を受け付けました。
+
+===
+ユーザー名：{username}
+パスワード：{password}
+氏名：{last_name} {first_name}
+フリガナ：{last_name_kana} {first_name_kana}
+生年月日：{birth_year}年 {birth_month}月 {birth_day}日
+性別：男
+
+連絡先
+  携帯電話・PHS：080-3415-4128
+  e-mail（PC）：ishinjiroster@gmail.com
+
+現住所
+  郵便番号：300-2345
+  都道府県：茨城県
+  市区町村番地：つくばみらい市
+学校情報
+  学校種別：大学院（博士課程）
+  学校名：茨城県立医療大学
+  学部名：保険医療学部
+  学科名：放射線技術科学科
+  文理区分：文系
+  入学年：2019年 03月
+  卒業年月：2024年 05月
+  現在の学年：6年
+  所属ゼミ・研究室名：門間研究室
+  専攻テーマ・研究テーマ：せんこうてーま
+認知経路
+  弊社のインターンシップを知ったきっかけを教えてください。：{aaa}
+  （前問で「社員からの紹介」「内々定者・内定者からの紹介」「過去に参加された方からの紹介」「友人・知人からの紹介」「その他」を選んだ方は）紹介者の氏名や会社名、知るきっかけとなったメディアをフルネームで教えてください。：{bbb}
+
+以下からログインしてご記入ください。
+　http://example.com/login
+
+[/email]
