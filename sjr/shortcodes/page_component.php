@@ -38,14 +38,12 @@ function func_sjr_include_component($attrs, $content)
     $page_component = sjr_get_page_component($name);
     if($page_component){
         return sjr_name_replace(function() use ($content, $attrs, $page_component) {
-            sjr_do_shortcode($content, $attrs);
             $component_attrs = $page_component[SJR_ATTRS];
             $component_content = $page_component[SJR_CONTENT];
-            return sjr_do_shortcode($component_content, $component_attrs, $attrs);
+            return sjr_do_shortcode($component_content, $attrs, $component_attrs);
         });
     }else{
-        global $sjr_def_page_components;
-        return "jjjjjjj" . print_r($sjr_def_page_components,true);
+        return "";
     }
 }
 add_shortcode('sjr_include_component', 'func_sjr_include_component');

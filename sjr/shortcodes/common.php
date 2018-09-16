@@ -5,6 +5,25 @@ define("SJR_CONTENT","content");
 
 $sjr_show = false;
 
+$parent_attrs = [];
+
+function sjr_on_attrs(array $current_attrs, $func)
+{
+    global $parent_attrs;
+    $swap = [] + $parent_attrs;
+    $new_attrs = $current_attrs + $parent_attrs;
+    // $parent_attrs = $new_attrs;
+    $rtn = $func($new_attrs);
+    $parent_attrs = $swap;
+    return $rtn;
+}
+
+function sjr_set_parent_attrs(array $attrs)
+{
+    global $parent_attrs;
+    $parent_attrs = $attrs;
+}
+
 function sjr_is_on_show()
 {
     global $sjr_show;
@@ -39,10 +58,10 @@ function sjr_mk_if_match_state(string $content, array $attrs)
 
 /*
  [some_shortcode]
-<input name="{name}" /> 
+<input name="{name}" /> baa is {baa}
  [/some_shortcode]
 
- [some_shortcode2 hoge="hogehoge" foo="foofoo"]
+ [some_shortcode2 hoge="hogehoge" foo="foofoo" baa="___"]
  <div>hoge = {hoge}</div>
  <div>foo  = {foo}</div>
    [some_shortcode name="{hoge}"]
@@ -52,16 +71,20 @@ function sjr_mk_if_match_state(string $content, array $attrs)
  
  <div>hoge = hogehoge</div>
  <div>foo  = foofoo</div>
-<input name="hogehoge" /> 
+<input name="hogehoge" /> baa is ___
 */
 function sjr_do_shortcode(string $content, array $attrs=[], array $defaults=[]): string
 {
     $attrs = $attrs + $defaults;
-    foreach($attrs as $k => $v) {
-        $k2 = "{". $k . "}";
-        $content = str_replace($k2, $v, $content);
-    }
-    return do_shortcode($content);
+    return sjr_on_attrs($attrs, function($new_attrs) use ($content) {
+        foreach($new_attrs as $k => $v) {
+            $k2 = "{". $k . "}";
+            $content = str_replace($k2, $v, $content);
+        }
+        // return "<div>" . print_r($new_attrs, true) . "</div>" . do_shortcode($content);
+        sjr_set_parent_attrs($new_attrs);
+        return do_shortcode($content);
+    });    
 }
 
 // [sjr_require name="sjr_def_inputs" debug=""]
