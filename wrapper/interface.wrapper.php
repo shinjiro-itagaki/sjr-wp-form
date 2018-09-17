@@ -1,7 +1,7 @@
 <?php
 namespace sjr;
 
-require_once( dirname( __FILE__ ) . '/class.post.php' );
+require_once( dirname( __FILE__ ) . '/interface.page.php' );
 
 interface Wrapper
 {

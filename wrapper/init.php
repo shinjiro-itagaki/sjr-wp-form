@@ -1,5 +1,5 @@
 <?php
-require_once( dirname( __FILE__ ) . '/class.wrapper.php' );
+require_once( dirname( __FILE__ ) . '/interface.wrapper.php' );
 
 $sjr_wrapper = null;
 function init_wrapper(){

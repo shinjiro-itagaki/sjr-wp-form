@@ -2,8 +2,8 @@
 namespace sjr;
 
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-require_once( dirname(__FILE__) . '/class.wrapper.php' );
-require_once( dirname(__FILE__) . '/class.post.php' );
+require_once( dirname(__FILE__) . '/interface.wrapper.php' );
+require_once( dirname(__FILE__) . '/interface.page.php' );
 
 function do_shortcode_impl(string $content){
     return do_shortcode($content);
