@@ -26,8 +26,10 @@ function func_sjr_create_user(array $attrs)
          * echo "-----<br />"; */
         
         $res = wrapper()->create_user($username, $password, $email);
-        sjr_set_var($varname, $res);
-        return print_r($res,true);
+        if($res){
+            sjr_set_var($varname, ($res->isSuccess() ? $res->userID() : null));
+        }
+        // return print_r($res,true);
         // return 
     }
     return "";

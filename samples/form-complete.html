@@ -1,0 +1,36 @@
+[sjr_on_post]
+[sjr_generate_password varname="@new_password"]
+[sjr_set_var name="@tel" value="080-3415-4128"]
+[sjr_create_user varname="@user_id" username="{@tel}" password="{@new_password}" email="{@Mail__c}"]
+[sjr_if varname="@user_id"]
+[sjr_set_var name="username" value="{@tel}"]
+[sjr_set_var name="password" value="{@new_password}"]
+
+[sjr_require slug="internship-2018-winter-emails"]
+[sjr_save_form_data name="internship-2018-autumn"]
+[sjr_send_mail name="internship-2018-winter-reply"]
+[sjr_send_mail name="internship-2018-winter-admin"]
+[/sjr_save_form_data]
+[/sjr_if]
+
+[sjr_if_not varname="@user_id"]
+<!-- ユーザー登録失敗なのでリダイレクト -->
+[sjr_redirect_to slug="internship-2018-winter-input"]
+[/sjr_if_not]
+
+[/sjr_on_post]
+
+[sjr_on_load_form_data name="internship-2018-autumn"]
+[sjr_if varname="@user_id"]
+<section>
+  <p>ご登録ありがとうございました。</p>
+  <p>後ほどメールが届きます。メールが届かない場合はご連絡ください。</p>
+</section>
+[/sjr_if]
+
+[sjr_if varname="@user_id"]
+<section>
+  <p>ユーザーの新規登録に失敗しました。</p>
+</section>
+[/sjr_if]
+[/sjr_on_load_form_data]

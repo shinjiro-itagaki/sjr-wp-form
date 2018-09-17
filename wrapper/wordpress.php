@@ -4,6 +4,7 @@ namespace sjr;
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 require_once( dirname(__FILE__) . '/interface.wrapper.php' );
 require_once( dirname(__FILE__) . '/interface.page.php' );
+require_once( dirname(__FILE__) . '/interface.user.php' );
 
 function do_shortcode_impl(string $content){
     return do_shortcode($content);
@@ -55,16 +56,16 @@ class WP_Page implements PageInterface
     function __construct($post) {
         $this->post = $post;
     }
-    public function getID(){
+    public function getID() : int {
         return $this->post->ID;
     }
-    public function getContent(){
+    public function getContent() : string {
         return $this->post->post_content;
     }
-    public function getType(){
+    public function getType() : string{
         return $this->post->post_type;
     }
-    public function getURL(){
+    public function getURL() : string{
         return get_permalink( $this->post->ID );
     }
 }
@@ -106,6 +107,31 @@ class WP_FormData implements FormDataInterface
 
     public function save() : boolean {
         
+    }
+}
+
+class WP_CreateUserResult implements CreateUserResult
+{
+    private $user_id = 0;
+    private $errmsg = null; 
+    function __construct($res) {
+        if(is_numeric($res)){
+            $this->user_id = $res;
+        }else{
+            $this->errmsg = print_r($res->get_error_messages(), true);
+        }
+    }
+    
+    public function isSuccess() : bool {
+        return ($this->user_id > 0);
+    }
+    
+    public function userID() : int {
+        return $this->user_id;
+    }
+    
+    public function errorMessage() : string {
+        return $this->errmsg;
     }
 }
 
@@ -152,13 +178,9 @@ class WP_Wrapper implements Wrapper
         return slug_to_page_impl($slug);
     }
 
-    function create_user(string $username, string $password, string $email) : int{
+    function create_user(string $username, string $password, string $email) : CreateUserResult {
         $res = wp_create_user( $username, $password, $email );
-        if(is_numeric($res)){
-            return $res;
-        }else{
-            return 0;
-        }
+        return new WP_CreateUserResult($res);
     }
 
     function find_form_data(  string $form_name, int $user_id) : FormDataInterface {

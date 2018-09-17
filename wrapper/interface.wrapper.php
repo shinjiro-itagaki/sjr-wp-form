@@ -3,6 +3,7 @@ namespace sjr;
 
 require_once( dirname( __FILE__ ) . '/interface.page.php' );
 require_once( dirname( __FILE__ ) . '/interface.form_data.php' );
+require_once( dirname( __FILE__ ) . '/interface.user.php' );
 
 interface Wrapper
 {
@@ -17,7 +18,7 @@ interface Wrapper
     function slug_to_page(string $slug) : PageInterface;
     
     // return 0 if failed
-    function create_user(string $username, string $password, string $email) : int;
+    function create_user(string $username, string $password, string $email) : CreateUserResult;
 
     function find_form_data(  string $form_name, int $user_id)              : FormDataInterface;
     function create_form_data(string $form_name, int $user_id, array $data) : FormDataInterface;
