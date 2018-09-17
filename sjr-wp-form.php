@@ -9,7 +9,8 @@ Author URI: https://github.com/shinjiro-itagaki/sjr-wp-form
 License: GPL3
 */
 
+//================ 
+// for WordPress
+//================ 
 require_once( dirname( __FILE__ ) . '/wrapper/wordpress.php' );
-include_once( dirname( __FILE__ ) . '/functions.php' );
-
-?>
+require_once( dirname( __FILE__ ) . '/functions.php' );

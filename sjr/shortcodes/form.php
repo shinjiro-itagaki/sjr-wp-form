@@ -70,3 +70,13 @@ function func_sjr_page($attrs, $content)
     }
 }
 add_shortcode('sjr_page', 'func_sjr_page');
+
+function func_sjr_on_load_form_data($attrs, $content)
+{
+    
+}
+add_shortcode("sjr_on_load_form_data", 'func_sjr_on_load_form_data');
+
+// == form
+// sjr_add_form_data name="username" value="{tel}"
+// ==

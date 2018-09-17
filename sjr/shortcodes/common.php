@@ -49,21 +49,21 @@ function sjr_do_shortcode(string $content, array $attrs=[], array $defaults=[]):
         }
         // return "<div>" . print_r($new_attrs, true) . "</div>" . do_shortcode($content);
         sjr_set_parent_attrs($new_attrs);
-        return sjr\do_shortcode_impl($content);
-    });    
+        return wrapper()->do_shortcode($content);
+    });
 }
 
 function slug_to_page($slug){
-    return get_page_by_path( $slug,  OBJECT, ['post','page'] );
+    return wrapper()->slug_to_page($slug);
 }
 
 function slug_to_path($slug){
     $page = slug_to_page($slug);
     if($page){
-        return get_permalink( $page->ID );
+        return $page->getURL();
     }else{
         return null;
-    }
+    }    
 }
 
 // [sjr_require name="sjr_def_inputs" debug=""]
@@ -79,10 +79,10 @@ function func_sjr_require(array $attrs)
         # page : 固定ページ
         $post = slug_to_page($slug);
         if($post){
-            $content = $post->post_content;
+            $content = $post->getContent();
             sjr_do_shortcode($content);
-            $post_id = $post->ID;
-            $post_type = $post->post_type;
+            $post_id = $post->getID();
+            $post_type = $post->getType();
         }else{
             $content = "page of '$slug' is not found.";
         }
@@ -101,4 +101,14 @@ function func_sjr_require(array $attrs)
         return "";
     }
 }
-add_shortcode('sjr_require', 'func_sjr_require');
+
+wrapper()->add_shortcode('sjr_require', 'func_sjr_require');
+
+// == common
+// sjr_set_var name="username" value="@new_password"
+// sjr_get_var name="username"
+// sjr_if true=""
+// sjr_redirect_to slug=""
+// sjr_generate_password varname="@new_password" arg1="12" arg2="false"
+// sjr_create_user varname="@xx" username="jjj" password="@xxx" email="{email}"
+// ==

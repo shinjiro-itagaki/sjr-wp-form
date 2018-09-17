@@ -14,3 +14,11 @@ function func_sjr_if_match_state(array $attrs, string $content){
     }
 }
 add_shortcode('sjr_if_match_state', 'func_sjr_if_match_state');
+
+function func_sjr_set_state($attrs){
+    $state = sjr_get($attrs,'state');
+    if($state){
+        sjr_set_state($state);
+    }
+}
+add_shortcode('sjr_set_state', 'func_sjr_set_state');
