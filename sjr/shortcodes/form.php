@@ -74,15 +74,18 @@ add_shortcode('sjr_page', 'func_sjr_page');
 $loaded_form_data = [];
 
 // name="xxx"
-function func_sjr_on_load_form_data(array $attrs, string $content)
+function func_sjr_on_load_form_data($attrs, $content)
 {
     
 }
 add_shortcode("sjr_on_load_form_data", 'func_sjr_on_load_form_data');
 
 // sjr_save_form_data name="form-name"
-function func_sjr_save_form_data(array $attrs, string $content)
+function func_sjr_save_form_data($attrs, $content)
 {
-    
+    $res = true;
+    if($res){
+        sjr_do_shortcode($content);
+    }
 }
-add_shortcode("sjr_save_form_data", 'func_sjr_add_form_data');
+add_shortcode("sjr_save_form_data", 'func_sjr_save_form_data');

@@ -1,5 +1,7 @@
 <?php
 
+require_once( dirname( __FILE__ ) . "/common.php" );
+
 $sjr_show = false;
 $parent_attrs = [];
 function sjr_on_attrs(array $current_attrs, $func)
@@ -148,5 +150,20 @@ function sjr_get_var(string $name, $if_not_found=null){
 
 function sjr_get_vars() : array {
     global $custom_vars;
+    return $custom_vars;
+}
+
+function sjr_on_vars(callable $f)
+{
+    global $custom_vars;
+    $swap = $custom_vars;
+    $res = $f();
+    $custom_vars = $swap;
+    return $res;
+}
+
+function sjr_merge_vars(array $vars) : array {
+    global $custom_vars;
+    $custom_vars += ($vars ? $vars : []);
     return $custom_vars;
 }

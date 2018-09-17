@@ -18,7 +18,7 @@ function plugin_uuid_value(){
 
 function redirect_to($url){
     if(is_post()){
-        header("Location: $url");
+        header("Location: $url", true, 303);
         exit;
     }
 }

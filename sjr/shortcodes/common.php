@@ -6,8 +6,8 @@ define("SJR_TYPE","sjr_type");
 define("SJR_ATTRS","attr");
 define("SJR_CONTENT","content");
 
-function sjr_replace_by_vars(string $v){
-    if($v){
+function sjr_replace_by_vars($v){
+    if(is_string($v)){
         $vars = sjr_get_vars();
         foreach($vars as $varname => $value ){
             $sym = "{". $varname . "}";
@@ -17,7 +17,7 @@ function sjr_replace_by_vars(string $v){
     return $v;    
 }
 
-function sjr_get(array $attrs, string $name, $if_not_found=null)
+function sjr_get($attrs, $name, $if_not_found=null)
 {
     $v = (isset($attrs[$name])) ? sjr_replace_by_vars($attrs[$name]) : $if_not_found;
     return $v;
@@ -74,11 +74,11 @@ function sjr_do_shortcode(string $content, array $attrs=[], array $defaults=[]):
     });
 }
 
-function slug_to_page($slug){
+function slug_to_page(string $slug){
     return wrapper()->slug_to_page($slug);
 }
 
-function slug_to_path($slug){
+function slug_to_path(string $slug){
     $page = slug_to_page($slug);
     if($page){
         return $page->getURL();
@@ -194,14 +194,3 @@ function func_sjr_generate_password(array $attrs)
     return "";
 }
 wrapper()->add_shortcode('sjr_generate_password', 'func_sjr_generate_password');
-
-// on_post
-function func_sjr_on_post($attrs, $content)
-{
-    if(sjr\is_post()){
-        return sjr_do_shortcode($content);
-    }
-    return "";
-}
-wrapper()->add_shortcode('sjr_on_post', 'func_sjr_on_post');
-
