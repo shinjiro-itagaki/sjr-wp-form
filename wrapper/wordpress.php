@@ -123,7 +123,7 @@ class WP_CreateUserResult implements CreateUserResult
     }
     
     public function isSuccess() : bool {
-        return ($this->user_id > 0);
+        return ($this->user_id > 0 ? true : false);
     }
     
     public function userID() : int {
@@ -180,6 +180,8 @@ class WP_Wrapper implements Wrapper
 
     function create_user(string $username, string $password, string $email) : CreateUserResult {
         $res = wp_create_user( $username, $password, $email );
+        // echo "===========";
+        // echo print_r($res,true);
         return new WP_CreateUserResult($res);
     }
 

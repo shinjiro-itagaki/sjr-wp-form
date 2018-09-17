@@ -6,10 +6,11 @@ require_once(dirname(__FILE__) . '/global.php');
 function func_sjr_on_post($attrs, $content)
 {
     if(sjr\is_post()){
-        $prefix = sjr_get($attrs, 'post_varname_prefix', '');
-        return sjr_on_vars(function() use ($content, $prefix){
+        // echo print_r($_POST,true);
+        return sjr_on_vars(function() use ($content, $attrs){
+            $prefix = sjr_get($attrs, 'post_varname_prefix', '');
             foreach($_POST as $k => $v){
-                sjr_set_var($prefix.$k, $v);
+                sjr_set_var( $k , $v);
             }
             return sjr_do_shortcode($content);
         });
@@ -28,7 +29,7 @@ function func_sjr_redirect_to($attrs, $content)
     if($slug){
         $url = slug_to_path($slug);
     }
-    sjr\redirect_to($url ? $url : "./");
+    sjr\redirect_to($url ? $url : $_SERVER['HTTP_REFERER']);
 }
 wrapper()->add_shortcode('sjr_redirect_to', 'func_sjr_redirect_to');
 
@@ -50,10 +51,15 @@ function func_sjr_create_user(array $attrs)
         
         $res = wrapper()->create_user($username, $password, $email);
         if($res){
-            sjr_set_var($varname, ($res->isSuccess() ? $res->userID() : null));
+            // echo $res->errorMessage();
+            // echo print_r( ($res->isSuccess() ? "success" : "failed"),true);
+            sjr_set_var($varname, ($res->isSuccess() ? $res->userID() : null) );
+            //global $custom_vars;
+            //echo "666666666666666";
+            //echo print_r($custom_vars,true);
         }
         // return print_r($res,true);
-        // return 
+        // return
     }
     return "";
 }

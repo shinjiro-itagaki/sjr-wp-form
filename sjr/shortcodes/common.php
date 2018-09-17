@@ -19,7 +19,7 @@ function sjr_replace_by_vars($v){
 
 function sjr_get($attrs, $name, $if_not_found=null)
 {
-    $v = (isset($attrs[$name])) ? sjr_replace_by_vars($attrs[$name]) : $if_not_found;
+    $v = ((isset($attrs[$name])) ? sjr_replace_by_vars($attrs[$name]) : $if_not_found);
     return $v;
 }
 
@@ -141,7 +141,7 @@ function func_sjr_get_var(array $attrs)
 }
 wrapper()->add_shortcode('sjr_get_var', 'func_sjr_get_var');
 
-// sjr_if true=""
+// sjr_if varname=""
 function func_sjr_if(array $attrs, string $content)
 {
     $varname = sjr_get($attrs, 'varname');
