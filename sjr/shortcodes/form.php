@@ -77,6 +77,9 @@ function func_sjr_on_load_form_data($attrs, $content)
 }
 add_shortcode("sjr_on_load_form_data", 'func_sjr_on_load_form_data');
 
-// == form
 // sjr_add_form_data name="username" value="{tel}"
-// ==
+function func_sjr_add_form_data($attrs, $content)
+{
+    
+}
+add_shortcode("sjr_add_form_data", 'func_sjr_add_form_data');

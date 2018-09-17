@@ -111,3 +111,16 @@ function sjr_set_state($state){
     global $current_state;
     $current_state = $state;
 }
+
+$custom_vars = [];
+
+function sjr_set_var(string $name, $val){
+    global $custom_vars;
+    $custom_vars[$name] = $val;
+}
+
+function sjr_get_var(string $name){
+    global $custom_vars;
+    return $custom_vars[$name];
+}
+

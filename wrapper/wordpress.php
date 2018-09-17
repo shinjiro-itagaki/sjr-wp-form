@@ -119,6 +119,15 @@ class WP_Wrapper implements Wrapper
     function slug_to_page(string $slug) : PageInterface {
         return slug_to_page_impl($slug);
     }
+
+    function create_user(string $username, string $password, string $email) : int{
+        $res = wp_create_user( $username, $password, $email );
+        if(is_numeric($res)){
+            return $res;
+        }else{
+            return 0;
+        }
+    }
 }
 
 function new_wrapper() : Wrapper {

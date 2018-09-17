@@ -6,9 +6,9 @@ define("SJR_TYPE","sjr_type");
 define("SJR_ATTRS","attr");
 define("SJR_CONTENT","content");
 
-function sjr_get(array $attrs, string $name)
+function sjr_get(array $attrs, string $name, $if_not_found=null)
 {
-    return ((isset($attrs[$name])) ? $attrs[$name] : null );
+    return ((isset($attrs[$name])) ? $attrs[$name] : $if_not_found );
 }
 
 function sjr_mk_common(string $content, array $attrs)
@@ -101,14 +101,68 @@ function func_sjr_require(array $attrs)
         return "";
     }
 }
-
 wrapper()->add_shortcode('sjr_require', 'func_sjr_require');
 
 // == common
 // sjr_set_var name="username" value="@new_password"
+
+function func_sjr_set_var(array $attrs)
+{
+    $name = sjr_get($attrs, 'name');
+    $val = sjr_get($attrs, 'name');
+    sjr_set_var($name,$val);
+    return "";
+}
+wrapper()->add_shortcode('sjr_set_var', 'func_sjr_set_var');
+
 // sjr_get_var name="username"
+function func_sjr_get_var(array $attrs)
+{
+    $name = sjr_get($attrs, 'name');
+    return sjr_get_var($name);
+}
+wrapper()->add_shortcode('sjr_get_var', 'func_sjr_get_var');
+
 // sjr_if true=""
-// sjr_redirect_to slug=""
-// sjr_generate_password varname="@new_password" arg1="12" arg2="false"
-// sjr_create_user varname="@xx" username="jjj" password="@xxx" email="{email}"
-// ==
+function func_sjr_if(array $attrs, string $content)
+{
+    $varname = sjr_get($attrs, 'true');
+    $val = sjr_get_var($varname);
+    if($val){
+        return sjr_do_shortcode($content);
+    }else{
+        return "";
+    }
+}
+wrapper()->add_shortcode('sjr_if', 'func_sjr_if');
+
+function redirect_to(string $url){
+    headers("Location: $url");
+    exit;
+}
+
+function sjr_generate_password(int $length, $add_chars="") : string {
+    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789' . $add_chars ;
+    // $chars .= '!@#$%^&*()';
+    // $chars .= '-_ []{}<>~`+=,.;:/?|';
+ 
+    $password = '';
+    $strlen = strlen($chars);
+    for ( $i = 0; $i < $length; $i++ ) {
+        $password .= substr($chars, wp_rand(0, $strlen - 1), 1);
+    }
+    return $password;
+}
+
+// sjr_generate_password varname="@new_password" add_chars=""
+function func_sjr_generate_password(array $attrs)
+{
+    $varname = sjr_get($attrs, 'varname');
+    $add_chars = sjr_get($attrs, 'add_chars', "");
+    $val = sjr_generate_password();
+    sjr_set_var($varname, $val);
+    return "";
+}
+wrapper()->add_shortcode('sjr_generate_password', 'func_sjr_generate_password');
+
+// on_post
