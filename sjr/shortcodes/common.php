@@ -6,9 +6,21 @@ define("SJR_TYPE","sjr_type");
 define("SJR_ATTRS","attr");
 define("SJR_CONTENT","content");
 
+function sjr_replace_by_vars(string $v){
+    if($v){
+        $vars = sjr_get_vars();
+        foreach($vars as $varname => $value ){
+            $sym = "{". $varname . "}";
+            $v = str_replace($sym,$value,$v);
+        }
+    }
+    return $v;    
+}
+
 function sjr_get(array $attrs, string $name, $if_not_found=null)
 {
-    return ((isset($attrs[$name])) ? $attrs[$name] : $if_not_found );
+    $v = (isset($attrs[$name])) ? sjr_replace_by_vars($attrs[$name]) : $if_not_found;
+    return $v;
 }
 
 function sjr_mk_common(string $content, array $attrs)
@@ -42,14 +54,23 @@ function sjr_mk_if_match_state(string $content, array $attrs)
 function sjr_do_shortcode(string $content, array $attrs=[], array $defaults=[]): string
 {
     $attrs = $attrs + $defaults;
+   
     return sjr_on_attrs($attrs, function($new_attrs) use ($content) {
+        sjr_set_parent_attrs($new_attrs);
+        $content = wrapper()->do_shortcode($content);
+        
         foreach($new_attrs as $k => $v) {
             $k2 = "{". $k . "}";
             $content = str_replace($k2, $v, $content);
         }
+        
+        $vars = sjr_get_vars();
+        foreach($vars as $k => $v){
+            $k2 = "{". $k . "}";
+            $content = str_replace($k2, $v, $content);
+        }
         // return "<div>" . print_r($new_attrs, true) . "</div>" . do_shortcode($content);
-        sjr_set_parent_attrs($new_attrs);
-        return wrapper()->do_shortcode($content);
+        return $content;
     });
 }
 
@@ -103,13 +124,10 @@ function func_sjr_require(array $attrs)
 }
 wrapper()->add_shortcode('sjr_require', 'func_sjr_require');
 
-// == common
-// sjr_set_var name="username" value="@new_password"
-
 function func_sjr_set_var(array $attrs)
 {
     $name = sjr_get($attrs, 'name');
-    $val = sjr_get($attrs, 'name');
+    $val = sjr_get($attrs, 'value');
     sjr_set_var($name,$val);
     return "";
 }
@@ -126,7 +144,7 @@ wrapper()->add_shortcode('sjr_get_var', 'func_sjr_get_var');
 // sjr_if true=""
 function func_sjr_if(array $attrs, string $content)
 {
-    $varname = sjr_get($attrs, 'true');
+    $varname = sjr_get($attrs, 'varname');
     $val = sjr_get_var($varname);
     if($val){
         return sjr_do_shortcode($content);
@@ -135,6 +153,18 @@ function func_sjr_if(array $attrs, string $content)
     }
 }
 wrapper()->add_shortcode('sjr_if', 'func_sjr_if');
+
+function func_sjr_if_not(array $attrs, string $content)
+{
+    $varname = sjr_get($attrs, 'varname');
+    $val = sjr_get_var($varname);
+    if(!$val){
+        return sjr_do_shortcode($content);
+    }else{
+        return "";
+    }
+}
+wrapper()->add_shortcode('sjr_if_not', 'func_sjr_if_not');
 
 function redirect_to(string $url){
     headers("Location: $url");
@@ -159,10 +189,19 @@ function func_sjr_generate_password(array $attrs)
 {
     $varname = sjr_get($attrs, 'varname');
     $add_chars = sjr_get($attrs, 'add_chars', "");
-    $val = sjr_generate_password();
+    $val = sjr_generate_password(12);
     sjr_set_var($varname, $val);
     return "";
 }
 wrapper()->add_shortcode('sjr_generate_password', 'func_sjr_generate_password');
 
 // on_post
+function func_sjr_on_post($attrs, $content)
+{
+    if(sjr\is_post()){
+        return sjr_do_shortcode($content);
+    }
+    return "";
+}
+wrapper()->add_shortcode('sjr_on_post', 'func_sjr_on_post');
+

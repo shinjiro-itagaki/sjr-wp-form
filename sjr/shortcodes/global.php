@@ -5,9 +5,26 @@ $parent_attrs = [];
 function sjr_on_attrs(array $current_attrs, $func)
 {
     global $parent_attrs;
+    $vars = sjr_get_vars();
+    
+    //echo "vars >><br />";
+    //echo print_r($vars, true);
+    //echo "<br /> >> ";
+    
+    $current_attrs2 = [] + $current_attrs;
+    
+    foreach($current_attrs as $k => $v){
+        $newv = $v;
+        foreach(($vars + $parent_attrs) as $k2 => $v2){
+            $varsym = "{".$k2."}";
+            $newv = str_replace($varsym,$v2,$newv);
+        }
+        $current_attrs2[$k]=$newv;
+    }
+    $current_attrs = $current_attrs2;
+
     $swap = [] + $parent_attrs;
     $new_attrs = $current_attrs + $parent_attrs;
-    // $parent_attrs = $new_attrs;
     $rtn = $func($new_attrs);
     $parent_attrs = $swap;
     return $rtn;
@@ -115,12 +132,21 @@ function sjr_set_state($state){
 $custom_vars = [];
 
 function sjr_set_var(string $name, $val){
+    // echo "$name:  $val <br />";
     global $custom_vars;
     $custom_vars[$name] = $val;
 }
 
-function sjr_get_var(string $name){
+function sjr_get_var(string $name, $if_not_found=null){
     global $custom_vars;
-    return $custom_vars[$name];
+    if(isset($custom_vars[$name])){
+        return $custom_vars[$name];
+    }else{
+        return $if_not_found;
+    }
 }
 
+function sjr_get_vars() : array {
+    global $custom_vars;
+    return $custom_vars;
+}

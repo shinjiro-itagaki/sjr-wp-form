@@ -40,7 +40,7 @@ function func_sjr_show_form_display(array $default_attrs, string $footer)
         return "
 <form method=\"post\" action=\"$action_url\">
 <input type=\"hidden\" name=\"$input_name\" value=\"$input_value\" />
-<input type=\"hidden\" name=\"\" value=\"\" />
+<input type=\"hidden\" name=\"slug\" value=\"$post_slug\" />
 $content
 $footer
 </form>

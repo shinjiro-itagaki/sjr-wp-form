@@ -78,6 +78,38 @@ function slug_to_page_impl(string $slug) : PageInterface {
     }
 }
 
+class WP_FormData implements FormDataInterface
+{
+    private $post;
+    private $meta = [];
+    
+    function __construct(WP_Post $post) {
+        $this->post = $post;
+    }
+    
+    public function getID() : int {
+        return $this->post->ID;
+    }
+    
+    public function getUserID() : int {
+        return $this->post->post_author;
+    }
+    
+    public function getData() : array {
+        return get_post_meta($post_id);
+    }
+
+    public function setData(array $data) : array {
+        $this->meta = $data;
+        return get_post_meta($post_id);
+    }
+
+    public function save() : boolean {
+        
+    }
+}
+
+
 class WP_Wrapper implements Wrapper
 {
     function add_shortcode(string $codename, $funcname){
@@ -126,6 +158,43 @@ class WP_Wrapper implements Wrapper
             return $res;
         }else{
             return 0;
+        }
+    }
+
+    function find_form_data(  string $form_name, int $user_id) : FormDataInterface {
+        $args = [
+            'post_author' => $user_id,
+            'post_type'   => PLUGIN_UUID_VAL,
+            'post_status' => 'any',
+        ];
+    
+        $posts = get_posts( $args );
+        foreach($posts as $p){
+            if ($uid == $unique_id){
+                return new WP_FormData($p);
+            }
+        }
+        return null;
+    }
+    
+    function create_form_data(string $form_name, int $user_id, array $data) : FormDataInterface {
+        $data = array(
+            // 'ID'             => [ <投稿 ID> ] // 既存の投稿を更新する場合に指定。
+            'post_author'  => $user_id,
+            'post_content' => '',
+            // 'post_name'      => [ <文字列> ] // 投稿のスラッグ。
+            // 'post_title'     => [ <文字列> ] // 投稿のタイトル。
+            'post_status'  => 'private',
+            'post_type'    => PLUGIN_UUID_VAL,
+        );
+
+        // int|WP_Error)
+        $res = wp_insert_post($data, true);
+        if(is_numeric($res)){
+            $post = get_post( $res, 'OBJECT');
+            return new WP_FormData($post);
+        }else{
+            return null;
         }
     }
 }

@@ -5,3 +5,4 @@ require_once( dirname( __FILE__ ) . "/shortcodes/input.php" );
 require_once( dirname( __FILE__ ) . "/shortcodes/form.php" );
 require_once( dirname( __FILE__ ) . "/shortcodes/form_display.php" );
 require_once( dirname( __FILE__ ) . "/shortcodes/page_component.php" );
+require_once( dirname( __FILE__ ) . "/shortcodes/on_post.php" );
